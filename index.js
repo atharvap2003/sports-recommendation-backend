@@ -8,6 +8,9 @@ const authRoutes = require("./routes/auth");
 const feedback = require("./routes/feedback");
 const adminRoutes = require("./routes/adminUsers");
 const eventRoutes = require("./routes/adminEvents");
+const equipmentRoutes = require("./routes/adminEquipment");
+
+const frontendEvent = require("./routes/frontendEvents")
 
 dotenv.config();
 
@@ -30,7 +33,7 @@ app.use(cors({
   credentials: true, 
 }));
 
-// Middlewar
+// Middleware
 app.use(express.json());
 
 // Routes
@@ -38,6 +41,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedback);
 app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/events", eventRoutes);
+app.use("/api/admin/equipment", equipmentRoutes);
+
+//userRoutes:
+app.use("/api/user/getevent", frontendEvent);
+
 
 // Test Route
 app.get("/", (req, res) => {

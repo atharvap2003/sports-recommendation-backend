@@ -59,6 +59,12 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    registeredEvents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
   },
   { timestamps: true }
 );

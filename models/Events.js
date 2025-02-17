@@ -43,8 +43,16 @@ const eventSchema = new mongoose.Schema({
   },
   sportsCategory: {
     type: String,
-    required: [true, "Sports category is required"],
-    enum: ["basketball", "football", "cricket", "tennis", "athletics"]
+    required: [true, "Sports category is required"]
+  },
+  applyLastDate:{
+    type: Date,
+  },
+  coordinator_name:{
+    type: String,
+  },
+  coordinator_no:{
+    type: String,
   },
   participants: [{
     type: mongoose.Schema.Types.ObjectId,

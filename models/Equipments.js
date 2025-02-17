@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Equipments = new mongoose.Schema({
-    name:{
+    equipmentname:{
         type: String,
         required: true,
     },
@@ -12,6 +12,6 @@ const Equipments = new mongoose.Schema({
     TotalQuantity:{
         type: Number,
     }
-})
+},{ timestamps: true })
 
 module.exports = mongoose.model("Equipment", Equipments);

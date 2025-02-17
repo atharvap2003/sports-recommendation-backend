@@ -1,12 +1,9 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
 const router = express.Router();
 const mongoose = require("mongoose");
-const verifyToken = require("../middlewares/authMiddleware");
 
-router.get("/getAllUsers",  async (req, res) => {
+router.get("/getAllUsers", async (req, res) => {
   try {
     // Extract query parameters
     const page = parseInt(req.query.page) || 1; // Default page 1
@@ -38,15 +35,10 @@ router.get("/getAllUsers",  async (req, res) => {
     // Get total count of users (for pagination metadata)
     const totalUsers = await User.countDocuments(filter);
 
-    // Check if users exist
-    if (!users || users.length === 0) {
-      return res.status(404).json({ message: "No users found" });
-    }
-
-    // Return response with pagination metadata
+    // Even if no users are found, return a success response with an empty array.
     return res.status(200).json({
       success: true,
-      users,
+      users, // This will be an empty array if no users match.
       pagination: {
         totalUsers,
         currentPage: page,
@@ -56,11 +48,13 @@ router.get("/getAllUsers",  async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching users:", error.message);
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
+
 
 router.delete("/deleteUser/:userId", async (req, res) => {
     try {
