@@ -11,6 +11,10 @@ const Equipments = new mongoose.Schema({
     },
     TotalQuantity:{
         type: Number,
+    },
+    isAvailable:{
+        type: Boolean,
+        default: false
     }
 },{ timestamps: true })
 

@@ -10,7 +10,9 @@ const adminRoutes = require("./routes/adminUsers");
 const eventRoutes = require("./routes/adminEvents");
 const equipmentRoutes = require("./routes/adminEquipment");
 
-const frontendEvent = require("./routes/frontendEvents")
+
+const frontendEvent = require("./routes/frontendEvents");
+const frontendEquipment = require("./routes/frontendEquipment");
 
 dotenv.config();
 
@@ -45,6 +47,7 @@ app.use("/api/admin/equipment", equipmentRoutes);
 
 //userRoutes:
 app.use("/api/user/getevent", frontendEvent);
+app.use("/api/user/equipment", frontendEquipment);
 
 
 // Test Route
