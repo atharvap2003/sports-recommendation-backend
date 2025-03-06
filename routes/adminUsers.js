@@ -27,6 +27,8 @@ router.get("/getAllUsers", async (req, res) => {
       fullname: 1,
       email: 1,
       mobile_number: 1,
+      user_type: 1,
+      isVerifiedByAdmin: 1,
       _id: 1,
     })
       .skip(skip)
@@ -55,31 +57,86 @@ router.get("/getAllUsers", async (req, res) => {
   }
 });
 
+router.get("/getUser/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const user = await User.findById(userId, {});
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error("Error fetching user:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+});
+
+router.patch("/approveUser/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's isVerifiedByAdmin field to true
+    user.isVerifiedByAdmin = true;
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "User approved successfully", user });
+  } catch (error) {
+    console.error("Error approving user:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+});
 
 router.delete("/deleteUser/:userId", async (req, res) => {
-    try {
-      const { userId } = req.params;
-  
-      // Check if userId is a valid ObjectId
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: "Invalid user ID" });
-      }
-  
-      // Check if the user exists
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      // Delete the user
-      await User.findByIdAndDelete(userId);
-  
-      // Return success response
-      return res.status(200).json({ success: true, message: "User deleted successfully" });
-    } catch (error) {
-      console.error("Error deleting user:", error.message);
-      return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  try {
+    const { userId } = req.params;
+
+    // Check if userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
     }
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    // Return success response
+    return res
+      .status(200)
+      .json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
 });
 
 module.exports = router;

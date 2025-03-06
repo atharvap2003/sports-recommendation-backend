@@ -69,7 +69,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Complete User Profile - Step 2
-router.put("/create-profile",  async (req, res) => {
+router.put("/create-profile", async (req, res) => {
   try {
     const {
       userId,
@@ -80,6 +80,8 @@ router.put("/create-profile",  async (req, res) => {
       age,
       description,
       address,
+      sports_interest,
+      achievements,
     } = req.body;
 
     // Find user and update details
@@ -93,6 +95,8 @@ router.put("/create-profile",  async (req, res) => {
         age,
         description,
         address,
+        sports_interest,
+        achievements,
       },
       { new: true }
     );
@@ -109,6 +113,7 @@ router.put("/create-profile",  async (req, res) => {
       .json({ message: "Error updating profile", error: error.message });
   }
 });
+
 
 // User login
 router.post("/login", async (req, res) => {
@@ -132,7 +137,6 @@ router.post("/login", async (req, res) => {
     );
 
     res.cookie("token", token,{
-      sameSite: "None",
       maxAge: 3600000 
     });
 
@@ -145,6 +149,8 @@ router.post("/login", async (req, res) => {
         fullname: user.fullname,
         email: user.email,
         user_type: user.user_type,
+        isVerifiedByAdmin: user.isVerifiedByAdmin,
+        registeredEvents: user.registeredEvents,
       },
       token,
     });

@@ -59,6 +59,16 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    sports_interest: {
+      type: String,
+    },
+    achievements: {
+      type: String,
+    },
+    isVerifiedByAdmin: {
+      type: Boolean,
+      default: false,
+    },
     registeredEvents: [
       {
         type: mongoose.Schema.Types.ObjectId,
