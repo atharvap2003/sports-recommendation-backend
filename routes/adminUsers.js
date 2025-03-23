@@ -65,7 +65,10 @@ router.get("/getUser/:userId", async (req, res) => {
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
-    const user = await User.findById(userId, {});
+    const user = await User.findById(userId).populate({
+      path: "registeredEvents",
+      select: "title sportsCategory", // Select necessary event fields
+    });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
